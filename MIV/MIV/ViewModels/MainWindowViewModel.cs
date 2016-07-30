@@ -144,14 +144,12 @@ namespace MIV.ViewModels
 
         public INode Next
         {
-            get { return this.node.Next; }
-            set { this.node.Next = value; }
+            get { return this.node.Next; }      
         }
 
         public INode Prev
         {
-            get { return this.node.Prev; }
-            set { this.node.Prev = value; }
+            get { return this.node.Prev; }    
         }      
 
         public INode FindRoot()

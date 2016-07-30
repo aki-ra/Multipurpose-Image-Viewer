@@ -16,8 +16,8 @@ namespace MIV.Models
         void Remove(INode node);
         void Add(INode node, bool isDir);
         string Path { get; set; }
-        INode Next { get; set; }
-        INode Prev { get; set; }   
+        INode Next { get; }
+        INode Prev { get; }   
         INode FindRoot();
         bool IsDir { get; set; }
     }
@@ -77,10 +77,27 @@ namespace MIV.Models
         }
 
         INode next;
-        public INode Next { get; set; }
+        public INode Next
+        {
+            get
+            {
+                var idx = this.parent.Children.IndexOf(this);
+                if (idx == this.parent.Children.Count - 1) return this;
+                return this.parent.Children[idx + 1 ];
+            }
+
+        }
 
         INode prev;
-        public INode Prev { get; set; }      
+        public INode Prev
+        {
+            get
+            {          
+                var idx = this.parent.Children.IndexOf(this);
+                if (idx == 0) return this;
+                return this.parent.Children[idx - 1];
+            }
+        }      
                                            
         public virtual INode FindRoot()
         {
@@ -150,20 +167,10 @@ namespace MIV.Models
             foreach (var file in files)
             {
                 INode child = new Page(parent);
-                child.Path = file;
-                if (pages.Any())
-                {
-                    child.Prev = pages.Last();
-                    pages.Last().Next = child; 
-                }
-                pages.Add(child);
-            }    
-
-            foreach(var page in pages)
-            {                            
-                parent.Add(page, false);
-            }                                        
-        }                                               
+                child.Path = file;       
+                parent.Add(child, false);
+            }                              
+        }                                             
     }
                                 
 }
